@@ -11,6 +11,11 @@ const addPlace=(data)=>{
 const deletePlace=(name)=>{
   places.value=places.value.filter(p=>p.location.name!==name)
 }
+
+const isMobile = ref(window.innerWidth < 640);
+window.addEventListener('resize', () => {
+  isMobile.value = window.innerWidth < 640;
+});
 </script>
 <template>
   <main>
@@ -29,11 +34,11 @@ const deletePlace=(name)=>{
 
     </div>
 <!-- Weather Card -->
-<div class="grid grid-cols-2 gap-4">
-  <div v-for="(place, idx) in places" :key="idx">
-        <WeatherCard :place="place" @delete-place="deletePlace" />
-      </div>
-</div>
+<div :class="{ 'grid grid-cols-1 gap-4': isMobile, 'grid grid-cols-2 gap-4': !isMobile }">
+    <div v-for="(place, idx) in places" :key="idx">
+      <WeatherCard :place="place" @delete-place="deletePlace" />
+    </div>
+  </div>
   </main>
 
 </template>
